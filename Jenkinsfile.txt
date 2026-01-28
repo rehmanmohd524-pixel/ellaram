@@ -1,7 +1,12 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'M3'   // use your configured Maven name in Jenkins
+    }
+
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -26,11 +31,11 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy to Tomcat') {
             steps {
                 sh '''
-                cp /root/.m2/repository/DevOps/TestProject/1.0/TestProject-1.0.war \
-                   /var/lib/tomcat10/webapps
+                echo "Deploying WAR to Tomcat..."
+                cp target/*.war /var/lib/tomcat10/webapps/
                 '''
             }
         }
@@ -38,13 +43,15 @@ pipeline {
 
     post {
         success {
-            echo 'Build Successful!'
+            echo 'Build & Deployment Successful!'
             archiveArtifacts artifacts: 'target/*.war'
         }
         failure {
-            echo 'Build Failed!'
+            echo 'Build or Deployment Failed!'
         }
     }
 }
+
+
 
 
