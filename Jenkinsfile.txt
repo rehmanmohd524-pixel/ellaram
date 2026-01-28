@@ -1,56 +1,52 @@
 pipeline {
     agent any
 
+    // Define the tools you want to use
     tools {
-        maven 'M3'   // use your configured Maven name in Jenkins
+        maven 'M3'      // Replace 'M3' with the exact name of your Maven installation in Jenkins
+        jdk 'JDK11'     // Replace 'JDK11' with the exact name of your JDK installation in Jenkins
     }
 
     stages {
-
         stage('Checkout') {
             steps {
-                checkout scm
+                // Checkout from your Git repository
+                git url: 'https://github.com/rehmanmohd524-pixel/ellaram.git', branch: 'main'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'mvn clean compile'
+                // Clean and package the project using Maven
+                sh 'mvn clean package'
             }
         }
 
         stage('Test') {
             steps {
+                // Run tests (JUnit)
                 sh 'mvn test'
             }
         }
 
-        stage('Package') {
+        stage('Archive') {
             steps {
-                sh 'mvn package'
-            }
-        }
-
-        stage('Deploy to Tomcat') {
-            steps {
-                sh '''
-                echo "Deploying WAR to Tomcat..."
-                cp target/*.war /var/lib/tomcat10/webapps/
-                '''
+                // Archive the WAR file for deployment
+                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
             }
         }
     }
 
     post {
         success {
-            echo 'Build & Deployment Successful!'
-            archiveArtifacts artifacts: 'target/*.war'
+            echo 'Build completed successfully!'
         }
         failure {
-            echo 'Build or Deployment Failed!'
+            echo 'Build failed. Check the logs!'
         }
     }
 }
+
 
 
 
