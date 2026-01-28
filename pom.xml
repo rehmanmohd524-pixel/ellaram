@@ -14,10 +14,11 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Modern Maven WAR plugin version -->
+        <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
     </properties>
 
     <dependencies>
-
         <!-- Servlet API (provided by Tomcat) -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
@@ -26,21 +27,44 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- JUnit -->
+        <!-- JUnit for testing -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
         <finalName>simple-jenkins-app</finalName>
+        <plugins>
+            <!-- Modern WAR plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war-plugin.version}</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+
+            <!-- Compiler plugin for Java 11 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
+
+
 
 
 
