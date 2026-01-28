@@ -27,6 +27,14 @@ pipeline {
         }
     }
 
+stage('deploy') { 
+            steps {
+                sh "cp /root/.m2/repository/DevOps/TestProject/1.0/TestProject-1.0.war /var/lib/tomcat10/webapps"
+            }
+        }
+    }
+}
+
     post {
         success {
             echo 'Build Successful!'
@@ -37,3 +45,4 @@ pipeline {
         }
     }
 }
+
