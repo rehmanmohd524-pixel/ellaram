@@ -1,16 +1,10 @@
 pipeline {
     agent any
 
-    // Define the tools you want to use
-    tools {
-        maven 'M3'      // Replace 'M3' with the exact name of your Maven installation in Jenkins
-        jdk 'JDK11'     // Replace 'JDK11' with the exact name of your JDK installation in Jenkins
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                // Checkout from your Git repository
+                // Checkout your code from Git
                 git url: 'https://github.com/rehmanmohd524-pixel/ellaram.git', branch: 'main'
             }
         }
